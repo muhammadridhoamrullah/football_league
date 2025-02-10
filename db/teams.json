@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Manchester City",
+    "city": "Manchester",
+    "stadium": "Etihad Stadium",
+    "foundedYear": 1880,
+    "logoUrl": "https://3.bp.blogspot.com/-CR_2muWX-7s/WI3ZYwIGwLI/AAAAAAAAE7k/OltdjQk6648IYZ0aqqVVfl4kSCyo3I4ngCLcB/s600/Manchester%2BCity.png"
+  },
+  {
+    "name": "Liverpool",
+    "city": "Liverpool",
+    "stadium": "Anfield",
+    "foundedYear": 1892,
+    "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg8txYrfWOto98IL6gtQUifN-NoLko1gCd1UhYD3G1JaQWFqNFcxGyEkrVSuOvi3hSOchfNafMFbVhZLZr587ll-jOz8dcduZuoM3w9mK_7ZTnIo8fkRPegFrhVu3Huks-Pp8YdqjSOjDu0YOz4Ki3x2sjB93TpuzKN6hyBBSMtdTgbr4AZ9_EhX9nT/s600/Liverpool_FC.png"
+  },
+  {
+    "name": "Arsenal",
+    "city": "London",
+    "stadium": "Emirates Stadium",
+    "foundedYear": 1886,
+    "logoUrl": "https://3.bp.blogspot.com/-jDtOMiFKCMs/WI3ZW0wT9ZI/AAAAAAAAE7I/7hNa2kwsiYg7r3jD6sODaRQdDWDBkIsVQCLcB/s600/Arsenal.png"
+  },
+  {
+    "name": "Aston Villa",
+    "city": "Birmingham",
+    "stadium": "Villa Park",
+    "foundedYear": 1874,
+    "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiyRcFB8nJu1jA2dBvy6VrIjy7D76EpBPuHp8zikZgR5mCNWCLq-yKDW70e3p4wtf5QrnKxspekZboNBdrLK0EDbJv1-lQpYiV3Z5gDBSJntct2sxg86odYJQz7YU04pnR6Ns6S2fdxYbQ0DPOgtDksE9y-FgfkWa5aNl9LiTeb4GKNVnkAi_KT4psH/s600/Aston_Villa_FC.png"
+  },
+  {
+    "name": "Tottenham Hotspur",
+    "city": "London",
+    "stadium": "Tottenham Hotspur Stadium",
+    "foundedYear": 1882,
+    "logoUrl": "https://3.bp.blogspot.com/-iLO-cl2Joww/WI3ZZxd-G8I/AAAAAAAAE8A/XrxRTtOafn4y5ifudzEnvhQfqa9Goc1EACLcB/s600/Tottenham%2BHotspur%2BF.C..png"
+  },
+  {
+    "name": "Manchester United",
+    "city": "Manchester",
+    "stadium": "Old Trafford",
+    "foundedYear": 1878,
+    "logoUrl": "https://3.bp.blogspot.com/-bRX9fss8qDg/WI3ZY3DEhZI/AAAAAAAAE7o/JOS65Q6srP4I-5i-sGS3YWngv9eNPBfUQCLcB/s600/Manchester%2BUnited.png"
+  },
+  {
+    "name": "Newcastle United",
+    "city": "Newcastle upon Tyne",
+    "stadium": "St James' Park",
+    "foundedYear": 1892,
+    "logoUrl": "https://1.bp.blogspot.com/-tKYRstUDJkw/WKrBL6a3oyI/AAAAAAAAFKs/0RM_favmlXM7pa7yTClhUfr_KgwGkNT5wCLcB/s600/Newcastle%2BUnited.png"
+  },
+  {
+    "name": "West Ham United",
+    "city": "London",
+    "stadium": "London Stadium",
+    "foundedYear": 1895,
+    "logoUrl": "https://1.bp.blogspot.com/-nQTYNyO1xkw/WI3ZasnMOAI/AAAAAAAAE8M/A_RFCtq2liEN405yUGh4DR2FmVcGtevWACLcB/s600/West%2BHam%2BUnited.png"
+  },
+  {
+    "name": "Chelsea",
+    "city": "London",
+    "stadium": "Stamford Bridge",
+    "foundedYear": 1905,
+    "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQiv-UVUUDc4uWLXaAsL1qkoArXKM2ef11lgFFXgsDiK12BgvrAngl1a-D1kOB9PbK5mUgzzRtgxnzp7PbwsXnoxpHHdVHVV134yjnVo4WDsj8BFcibzNA56tbkZkl62YazVy6fOmDyCNWVQD_tCwO_6A23Lh1s1dGakAKI5Xvb8omlN-bQcnupT7S/s600/Chelsea_FC.png"
+  },
+  {
+    "name": "Brighton & Hove Albion",
+    "city": "Brighton",
+    "stadium": "American Express Community Stadium",
+    "foundedYear": 1901,
+    "logoUrl": "https://1.bp.blogspot.com/-t9etSkgEA6o/WKrBKFKIC4I/AAAAAAAAFKI/4w4Ml-1MjoU7UW6LO56shRoTXH1ZaKTJACLcB/s600/Brighton%2B%2526%2BHove%2BAlbion.png"
+  },
+  {
+    "name": "Wolverhampton Wanderers",
+    "city": "Wolverhampton",
+    "stadium": "Molineux Stadium",
+    "foundedYear": 1877,
+    "logoUrl": "https://2.bp.blogspot.com/-YllesNpT4MM/WKrBNqeomQI/AAAAAAAAFLU/mqe37I-erTcNkbgrhlWan-iiVPndsRKfgCLcB/s600/Wolverhampton%2BWanderers.png"
+  },
+  {
+    "name": "Crystal Palace",
+    "city": "London",
+    "stadium": "Selhurst Park",
+    "foundedYear": 1905,
+    "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGAlevbMD2BZ4t3r3A5sKqXLpwW9LGaqCmdlJ4pYCuOrdUJ2Szcni6mui5PJ35WMl6z6wZnm9SaXW5Ae2eCEgRoZCDpX2BcxASmyfjHo9QxAaVWeoabXh03EHVKEAoY5HwcmOf1TMbOF9lvHW2pHntxxqF_J80p3rWGSbJ-YwT2DW7Xm-9f6oCLrOhVdU/s600/Crystal_Palace_FC.png"
+  },
+  {
+    "name": "Bournemouth",
+    "city": "Bournemouth",
+    "stadium": "Vitality Stadium",
+    "foundedYear": 1890,
+    "logoUrl": "https://2.bp.blogspot.com/-12jUBdOfaIU/WI3ZW2wTO5I/AAAAAAAAE7E/5zyLaaCFQvI2EQhVy9NPp1VWKqgvRMCnwCLcB/s600/AFC%2BBournemouth.png"
+  },
+  {
+    "name": "Burnley",
+    "city": "Burnley",
+    "stadium": "Turf Moor",
+    "foundedYear": 1882,
+    "logoUrl": "/images/burnley-logo.png"
+  },
+  {
+    "name": "Everton",
+    "city": "Liverpool",
+    "stadium": "Goodison Park",
+    "foundedYear": 1878,
+    "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcbYrBuHs9ERzqwjovhSpYKYh4C6gDC-RkTkNLAf7gmfB_JiR5dF-VxR00YHCAmfS7cqHnpsx_uyFZ9anO2JU6EIP4dclYGc0ctn-3yfZRTZ9xtvrZI8A-yYnqv9gy8MeDhiasQoKhyphenhyphenCMsnLFc8I1C9b8lmgedpHgkGUyBgD9XlrKl7ZCowsYuoaTZGwk/s600/Burnley_FC.png"
+  },
+  {
+    "name": "Luton Town",
+    "city": "Luton",
+    "stadium": "Kenilworth Road",
+    "foundedYear": 1885,
+    "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivkLU_9ow87msLxrlxSNkXF3OkBfL2g1hOV_UUvAzgd1DQvYD40BUU0tks6E-QGD9Q9XfbbV5l-X_fiOeXvAknuWQuVsGlf8z2hyphenhyphen4w4_aBeGNmKmAm0nEq0lHPbgUxOMbYM25nmp9DaAwn1fuZQAJ2heNki2MSccjSftEF_T-uRJArcQeB7m-oBKbxEsE/s600/Luton_Town.png"
+  },
+  {
+    "name": "Nottingham Forest",
+    "city": "Nottingham",
+    "stadium": "City Ground",
+    "foundedYear": 1865,
+    "logoUrl": "https://blogger.googleusercontent.com/img/a/AVvXsEh9Ob5IKgJ0pVKD6ZL7H1ArZuZma6ti1SLNdzM258v3CBUywY62Ou2G1x3oAi38uIBcUc2la9DTTRxDg-E8EpM_eccyuKQVoh0Nx_ESkS-RXtXpWZsvPfzMO52CjdvYW85p9_EDost_SsLEDb9eOC0ek_7rf2JqiXRDoh_69Vzjk36IZ0dvJ7H5yAzx=s600"
+  },
+  {
+    "name": "Sheffield United",
+    "city": "Sheffield",
+    "stadium": "Bramall Lane",
+    "foundedYear": 1889,
+    "logoUrl": "https://1.bp.blogspot.com/-h9CV15vLsYE/WS25Z1513JI/AAAAAAAAFa0/zVI04ykXxC8DV1cvvrQ1-PyfAYP3zXX0gCPcB/s600/Sheffield_United_FC.png"
+  },
+  {
+    "name": "Fulham",
+    "city": "London",
+    "stadium": "Craven Cottage",
+    "foundedYear": 1879,
+    "logoUrl": "https://4.bp.blogspot.com/-sXdlh4CPDJ4/WKrBLN2v4AI/AAAAAAAAFKc/G3QNdC-z39Ykudw9kqZ9kkX2utpys7sGwCLcB/s600/Fulham.png"
+  },
+  {
+    "name": "Brentford",
+    "city": "London",
+    "stadium": "Gtech Community Stadium",
+    "foundedYear": 1889,
+    "logoUrl": "https://1.bp.blogspot.com/-j0_hezwH7cE/XyqtVSfOvTI/AAAAAAAAJZA/owF0XhKr93c_LuFy08FVH5QjlO3zJXbLQCLcBGAsYHQ/s600/Brentford_FC.png"
+  }
+]

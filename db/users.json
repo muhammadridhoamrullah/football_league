@@ -1,0 +1,47 @@
+[
+  {
+    "username": "admin",
+    "email": "admin@gmail.com",
+    "password": "1234567890",
+    "role": "Admin",
+    "fullName": "Admin",
+    "phoneNumber": "+621234567890",
+    "status": "Active"
+  },
+  {
+    "username": "staff",
+    "email": "staff@gmail.com",
+    "password": "1234567890",
+    "role": "Staff",
+    "fullName": "Staff User",
+    "phoneNumber": "+627890123456",
+    "status": "Active"
+  },
+  {
+    "username": "ridhoamrullah",
+    "email": "ridhoamrullah99@gmail.com",
+    "password": "1234567890",
+    "role": "User",
+    "fullName": "Muhammad Ridho Amrullah",
+    "phoneNumber": "+6285363508580",
+    "status": "Active"
+  },
+  {
+    "username": "janedoe",
+    "email": "jane.doe@gmail.com",
+    "password": "1234567890",
+    "role": "customer",
+    "fullName": "Jane Doe",
+    "phoneNumber": "+62823456789",
+    "status": "Active"
+  },
+  {
+    "username": "bobsmith",
+    "email": "bob.smith@gmail.com",
+    "password": "1234567890",
+    "role": "customer",
+    "fullName": "Bob Smith",
+    "phoneNumber": "+62834567890",
+    "status": "Active"
+  }
+]
