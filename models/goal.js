@@ -15,11 +15,58 @@ module.exports = (sequelize, DataTypes) => {
   }
   Goal.init(
     {
-      MatchId: DataTypes.INTEGER,
-      ScorerTeamId: DataTypes.INTEGER,
-      scorer: DataTypes.STRING,
-      minute: DataTypes.INTEGER,
-      assistBy: DataTypes.STRING,
+      MatchId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Match is required",
+          },
+          notEmpty: {
+            msg: "Match is required",
+          },
+        },
+      },
+      ScorerTeamId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Team is required",
+          },
+          notEmpty: {
+            msg: "Team is required",
+          },
+        },
+      },
+      scorer: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Scorer is required",
+          },
+          notNull: {
+            msg: "Scorer is required",
+          },
+        },
+      },
+      minute: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Minute is required",
+          },
+          notEmpty: {
+            msg: "Minute is required",
+          },
+        },
+      },
+      assistBy: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       sequelize,
