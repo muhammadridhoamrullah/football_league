@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       Team.hasMany(models.Match, { as: "homeTeam", foreignKey: "HomeTeamId" });
       Team.hasMany(models.Match, { as: "awayTeam", foreignKey: "AwayTeamId" });
       Team.hasOne(models.Standing, { foreignKey: "TeamId" });
+      Team.hasMany(models.Goal, { foreignKey: "ScorerTeamId" });
     }
   }
   Team.init(
