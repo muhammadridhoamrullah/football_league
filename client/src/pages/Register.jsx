@@ -34,14 +34,6 @@ export default function Register() {
     dispatch(doRegister(formRegister));
   }
 
-  // if (loading) {
-  //   return (
-  //     <div className="w-full min-h-screen bg-[#004170] flex justify-center items-center py-10">
-  //       <Loader2 className="text-white w-12 h-12 animate-spin" />
-  //     </div>
-  //   );
-  // }
-
   useEffect(() => {
     if (error) {
       Swal.fire({
@@ -66,12 +58,12 @@ export default function Register() {
   return (
     <form onSubmit={submitHandler}>
       {loading && (
-        <div className="w-full min-h-screen bg-[#004170] flex justify-center items-center py-10">
+        <div className="w-full min-h-screen bg-[#38003D] flex justify-center items-center py-10">
           <Loader2 className="text-white w-12 h-12 animate-spin" />
         </div>
       )}
 
-      <div className="w-full min-h-screen bg-[#004170] flex justify-center items-center py-10">
+      <div className="w-full min-h-screen bg-[#38003D] flex justify-center items-center py-10">
         <div className="w-96 h-fit gap-10 px-4 py-6 border border-white text-white flex flex-col justify-between rounded-lg">
           <div className="flex justify-center font-extrabold text-4xl">
             REGISTER
