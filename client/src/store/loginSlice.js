@@ -7,6 +7,7 @@ export const loginSlice = createSlice({
     loading: false,
     error: null,
     data: null,
+    isLogin: false,
   },
   reducers: {
     loginRequest: (state) => {
@@ -16,10 +17,12 @@ export const loginSlice = createSlice({
     loginSuccess: (state, action) => {
       state.loading = false;
       state.data = action.payload;
+      state.isLogin = true;
     },
     loginError: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      state.isLogin = false;
     },
   },
 });
@@ -30,6 +33,7 @@ export function doLogin(data) {
   return async (dispatch) => {
     try {
       dispatch(loginRequest());
+      console.log(data, "ini data login");
 
       const response = await instance.post("/login", data);
 
@@ -37,7 +41,9 @@ export function doLogin(data) {
 
       dispatch(loginSuccess(response.data));
     } catch (error) {
-      dispatch(loginError(error.message));
+      console.log(error, "ini error");
+
+      dispatch(loginError(error.response.data.message));
     }
   };
 }

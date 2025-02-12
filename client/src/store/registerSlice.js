@@ -41,11 +41,11 @@ export function doRegister(data) {
         status: "Active",
         lastLogin: new Date(),
       };
-      const response = await instance.post("/users", tambahanInput);
+      const response = await instance.post("/login", tambahanInput);
 
       dispatch(registerSuccess(response.data));
     } catch (error) {
-      dispatch(registerError(error.message));
+      dispatch(registerError(error.response.data.message));
     }
   };
 }

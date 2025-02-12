@@ -9,7 +9,7 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [hidePassword, setHidePassword] = useState(true);
-  const { loading, data, error } = useSelector((state) => state.login);
+  const { loading, data, error, isLogin } = useSelector((state) => state.login);
 
   const [formLogin, setFormLogin] = useState({
     username: "",
@@ -27,7 +27,16 @@ export default function Login() {
 
   async function submitHandler(e) {
     e.preventDefault();
-    dispatch(doLogin(formLogin));
+    const isEmail = formLogin.username.includes("@");
+    console.log(isEmail, "ini isEmail");
+
+    const checkInput = {
+      [isEmail ? "email" : "username"]: formLogin.username,
+      password: formLogin.password,
+    };
+    console.log(checkInput, "ini checkinput");
+
+    dispatch(doLogin(checkInput));
   }
 
   function seePassword() {
@@ -43,6 +52,12 @@ export default function Login() {
       });
     }
   }, [error]);
+
+  useEffect(() => {
+    if (isLogin) {
+      navigate("/");
+    }
+  }, [isLogin]);
 
   return (
     <div className="w-full min-h-screen bg-[#38003D] flex justify-center items-center">
@@ -68,7 +83,7 @@ export default function Login() {
           <form onSubmit={submitHandler}>
             <div className="flex flex-col gap-4 text-[#38003D] font-semibold text-md px-4">
               <div className="flex flex-col gap-2">
-                <label>Username</label>
+                <label>Email / Username</label>
                 <input
                   type="text"
                   name="username"

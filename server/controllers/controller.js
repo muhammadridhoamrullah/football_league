@@ -92,7 +92,9 @@ class Controller {
 
   static async getAllTeams(req, res, next) {
     try {
-      const allTeams = await Team.findAll();
+      const allTeams = await Team.findAll({
+        order: [["name", "ASC"]],
+      });
 
       res.status(200).json(allTeams);
     } catch (error) {

@@ -20,7 +20,7 @@ export default function Navbar() {
   }
 
   return (
-    <div className="w-full h-14 bg-[#38003D] text-white flex justify-between  font-semibold text-md">
+    <div className="w-full h-14 bg-[#38003D] text-white flex justify-between  font-semibold text-md sticky top-0 z-50">
       <div className="flex w-80 h-full">
         <Link
           to={""}
@@ -31,9 +31,9 @@ export default function Navbar() {
           Dashboard
         </Link>
         <Link
-          to={"/team"}
+          to={"/teams"}
           className={`flex justify-center items-center w-full ${pathActive(
-            "/team"
+            "/teams"
           )}`}
         >
           Team

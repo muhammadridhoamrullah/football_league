@@ -3,6 +3,8 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home";
+import Team from "./pages/Team";
+import TeamDetail from "./pages/TeamDetail";
 
 function checkLogin() {
   if (!localStorage.access_token) {
@@ -38,8 +40,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/team",
-        element: <h1>Teams</h1>,
+        path: "/teams",
+        element: <Team />,
+      },
+      {
+        path: "/team/:id",
+        element: <TeamDetail />,
       },
       {
         path: "/schedule",
