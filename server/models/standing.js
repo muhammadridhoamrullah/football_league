@@ -26,18 +26,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      season: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Season is required",
-          },
-          notEmpty: {
-            msg: "Season is required",
-          },
-        },
-      },
+      season: DataTypes.STRING,
       matchesPlayed: DataTypes.INTEGER,
       wins: DataTypes.INTEGER,
       draws: DataTypes.INTEGER,
@@ -45,7 +34,6 @@ module.exports = (sequelize, DataTypes) => {
       goalsFor: DataTypes.INTEGER,
       goalsAgainst: DataTypes.INTEGER,
       points: DataTypes.INTEGER,
-      position: DataTypes.INTEGER,
     },
     {
       sequelize,

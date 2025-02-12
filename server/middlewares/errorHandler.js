@@ -29,11 +29,19 @@ async function errorHandler(err, req, res, next) {
   } else if (err.name === "FORBIDDEN") {
     res.status(403).json({ message: "You have no access" });
   } else if (err.name === "MISSING_INPUT_CREATE_MATCH") {
+    res.status(400).json({
+      message: "Home Team, Away Team, Date, Venue, and Season is required",
+    });
+  } else if (err.name === "MISSING_INPUT_CREATE_TICKET") {
     res
       .status(400)
-      .json({
-        message: "Home Team, Away Team, Date, Venue, and Season is required",
-      });
+      .json({ message: "Match Id, Category, Price, and Quantity is required" });
+  } else if (err.name === "STANDING_ALREADY_CREATED") {
+    res.status(400).json({ message: "Standing already created" });
+  } else if (err.name === "MISSING_INPUT_CREATE_STANDING") {
+    res.status(400).json({ message: "Season is required" });
+  } else if (err.name === "MISSING_INPUT_UPDATE_SCORE") {
+    res.status(400).json({ message: "Home Score and Away Score is required" });
   }
 }
 

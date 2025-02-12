@@ -1,3 +1,5 @@
+// const { Op } = require("sequelize/core");
+const { Op } = require("sequelize");
 const { comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
 const {
@@ -56,7 +58,9 @@ class Controller {
       }
 
       const findUser = await User.findOne({
-        $or: [{ email }, { username }],
+        where: {
+          [Op.or]: [{ email: email || null }, { username: username || null }],
+        },
       });
 
       if (!findUser) {
@@ -215,11 +219,19 @@ class Controller {
 
   static async getStandings(req, res, next) {
     try {
+      const { idSeason } = req.params;
       const findAllStandings = await Standing.findAll({
         include: {
           model: Team,
         },
+        where: {
+          season: idSeason,
+        },
       });
+
+      if (!findAllStandings) {
+        throw { name: "DATA_NOT_FOUND" };
+      }
 
       if (findAllStandings.some((standing) => standing.points !== undefined)) {
         findAllStandings.sort((a, b) => {
@@ -269,6 +281,16 @@ class Controller {
       const allTickets = await Ticket.findAll({
         include: {
           model: Match,
+          include: [
+            {
+              model: Team,
+              as: "HomeTeam",
+            },
+            {
+              model: Team,
+              as: "AwayTeam",
+            },
+          ],
         },
       });
 
@@ -285,6 +307,16 @@ class Controller {
       const findTicketById = await Ticket.findByPk(id, {
         include: {
           model: Match,
+          include: [
+            {
+              model: Team,
+              as: "HomeTeam",
+            },
+            {
+              model: Team,
+              as: "AwayTeam",
+            },
+          ],
         },
       });
 
@@ -430,6 +462,267 @@ class Controller {
       });
 
       res.status(201).json(createMatch);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateMatch(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const { date, venue, season, status } = req.body;
+
+      const findMatch = await Match.findByPk(id, {
+        include: [
+          {
+            model: Team,
+            as: "HomeTeam",
+          },
+          {
+            model: Team,
+            as: "AwayTeam",
+          },
+        ],
+      });
+
+      if (!findMatch) {
+        throw { name: "DATA_NOT_FOUND" };
+      }
+
+      const updateMatch = await Match.update(
+        {
+          date,
+          venue,
+          season,
+          status,
+          updatedAt: new Date(),
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+
+      res.status(200).json({ message: "Successfully Update Match" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async createTicket(req, res, next) {
+    try {
+      const { MatchId, category, price, quantity } = req.body;
+
+      if (!MatchId || !category || !price || !quantity) {
+        throw { name: "MISSING_INPUT_CREATE_TICKET" };
+      }
+
+      const createTicket = await Ticket.create({
+        MatchId,
+        category,
+        price,
+        quantity,
+        remainingQuantity: quantity,
+        status: "Available",
+      });
+
+      res.status(201).json(createTicket);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateTicket(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const { category, price, quantity, remainingQuantity, status } = req.body;
+
+      const findTicket = await Ticket.findByPk(id, {
+        include: {
+          model: Match,
+          include: [
+            {
+              model: Team,
+              as: "HomeTeam",
+            },
+            {
+              model: Team,
+              as: "AwayTeam",
+            },
+          ],
+        },
+      });
+
+      if (!findTicket) {
+        throw { name: "DATA_NOT_FOUND" };
+      }
+
+      const updatedRemainingQuantity =
+        quantity !== undefined ? quantity : remainingQuantity;
+
+      const updateTicket = await Ticket.update(
+        {
+          category,
+          price,
+          quantity,
+          remainingQuantity: updatedRemainingQuantity,
+          status,
+          updatedAt: new Date(),
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+
+      res.status(200).json({ message: "Successfully Update Ticket" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateMatchScore(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { homeTeamScore, awayTeamScore } = req.body;
+
+      if (!homeTeamScore || !awayTeamScore) {
+        throw { name: "MISSING_INPUT_UPDATE_SCORE" };
+      }
+
+      // Mencari pertandingan berdasarkan ID
+      const findMatch = await Match.findByPk(id, {
+        include: [
+          {
+            model: Team,
+            as: "HomeTeam",
+          },
+          {
+            model: Team,
+            as: "AwayTeam",
+          },
+        ],
+      });
+
+      // Jika pertandingan tidak ditemukan
+      if (!findMatch) {
+        throw { name: "DATA_NOT_FOUND" };
+      }
+
+      // Update skor pertandingan dan statusnya
+      await Match.update(
+        {
+          homeTeamScore,
+          awayTeamScore,
+          status: "Finished",
+          updatedAt: new Date(),
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+
+      // Mencari standing untuk tim tuan rumah dan tim tamu
+      const findHomeTeamStanding = await Standing.findOne({
+        where: {
+          TeamId: findMatch.HomeTeamId,
+        },
+      });
+
+      const findAwayTeamStanding = await Standing.findOne({
+        where: {
+          TeamId: findMatch.AwayTeamId,
+        },
+      });
+
+      // Menyesuaikan standing berdasarkan hasil pertandingan
+      if (homeTeamScore > awayTeamScore) {
+        findHomeTeamStanding.points += 3;
+        findHomeTeamStanding.wins += 1;
+        findAwayTeamStanding.losses += 1;
+      } else if (homeTeamScore < awayTeamScore) {
+        findAwayTeamStanding.points += 3;
+        findAwayTeamStanding.wins += 1;
+        findHomeTeamStanding.losses += 1;
+      } else {
+        findHomeTeamStanding.points += 1;
+        findAwayTeamStanding.points += 1;
+        findHomeTeamStanding.draws += 1;
+        findAwayTeamStanding.draws += 1;
+      }
+
+      // Update jumlah pertandingan yang telah dimainkan
+      findHomeTeamStanding.matchesPlayed += 1;
+      findAwayTeamStanding.matchesPlayed += 1;
+
+      // Update jumlah gol yang dicetak dan gol yang kebobolan
+      findHomeTeamStanding.goalsFor += homeTeamScore;
+      findHomeTeamStanding.goalsAgainst += awayTeamScore;
+      findAwayTeamStanding.goalsFor += awayTeamScore;
+      findAwayTeamStanding.goalsAgainst += homeTeamScore;
+
+      // Simpan perubahan standing
+      await findHomeTeamStanding.save();
+      await findAwayTeamStanding.save();
+
+      // Kirimkan respon berhasil dengan data terbaru
+      return res.status(200).json({
+        message: "Match score updated successfully",
+        match: {
+          id: findMatch.id,
+          homeTeamScore,
+          awayTeamScore,
+          status: "Finished",
+        },
+        homeTeamStanding: findHomeTeamStanding,
+        awayTeamStanding: findAwayTeamStanding,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async createStanding(req, res, next) {
+    try {
+      const { season } = req.body;
+
+      if (!season) {
+        throw { name: "MISSING_INPUT_CREATE_STANDING" };
+      }
+
+      const findStanding = await Standing.findOne({
+        where: {
+          season,
+        },
+      });
+
+      if (findStanding) {
+        throw { name: "STANDING_ALREADY_CREATED" };
+      }
+
+      const findAllTeams = await Team.findAll();
+
+      const standings = findAllTeams.map((team) => ({
+        TeamId: team.id,
+        season,
+        points: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        matchesPlayed: 0,
+      }));
+
+      await Standing.bulkCreate(standings);
+
+      res.status(200).json({ message: "Standings initialized successfully" });
     } catch (error) {
       next(error);
     }

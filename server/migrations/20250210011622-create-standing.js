@@ -20,7 +20,6 @@ module.exports = {
       },
       season: {
         type: Sequelize.STRING,
-        unique: true,
       },
       matchesPlayed: {
         type: Sequelize.INTEGER,
@@ -49,9 +48,6 @@ module.exports = {
       points: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
-      },
-      position: {
-        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
