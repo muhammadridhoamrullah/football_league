@@ -2,6 +2,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getDetailMatch } from "../store/detailMatchSlice";
+import {
+  Calendar1,
+  Clock,
+  Loader2Icon,
+  MapPin,
+  NotebookTabsIcon,
+} from "lucide-react";
+import { formatDate, formatTime } from "../components/CardSchedule";
 
 export default function DetailMatch() {
   const { id } = useParams();
@@ -13,42 +21,149 @@ export default function DetailMatch() {
     dispatch(getDetailMatch(id));
   }, []);
 
+  const homeGoals =
+    data?.goals?.filter(
+      (el) => el.ScorerTeamId === data.findMatchById.HomeTeamId
+    ).length || 0;
+
+  const awayGoals =
+    data?.goals?.filter(
+      (el) => el.ScorerTeamId === data.findMatchById.AwayTeamId
+    ).length || 0;
+
   return (
-    <div className="w-full h-[551px] flex justify-center items-center bg-[#38003D] text-white">
-      <div className="max-w-[1100px] max-h-[400px] border-2 border-white rounded-lg flex flex-col justify-between p-4">
-        <div className="bg-red-500 flex-2 flex justify-between">
-          <div className="bg-amber-950  overflow-hidden">
-            <img
-              src={data.findMatchById?.HomeTeam?.logoUrl}
-              alt=""
-              className="w-full h-full object-cover"
-            />
+    <div className="w-full h-[551px] flex justify-center items-start pt-4 bg-[#38003D] text-white">
+      {loading && (
+        <Loader2Icon className="flex justify-center items-center w-40 h-40 animate-spin text-white" />
+      )}
+      {data && data.findMatchById ? (
+        <div className="w-[1100px] h-[500px] border-2 border-white rounded-lg flex flex-col justify-between p-4">
+          <div className="flex-1  flex justify-between">
+            <div className=" w-2/3 h-full relative">
+              <img
+                src={data.findMatchById.HomeTeam.logoUrl}
+                alt={data.findMatchById.HomeTeam.name}
+                className="absolute w-full h-full  inset-0 object-contain"
+              />
+            </div>
+            <div className=" w-1/3 h-full flex flex-col justify-center items-center text-4xl font-bold gap-2">
+              <div>VS</div>
+              <div className="text-5xl font-bold">
+                {homeGoals} - {awayGoals}
+              </div>
+            </div>
+            <div className=" w-2/3 h-full relative">
+              <img
+                src={data.findMatchById.AwayTeam.logoUrl}
+                alt={data.findMatchById.AwayTeam.name}
+                className="absolute w-full h-full inset-0 object-contain"
+              />
+            </div>
           </div>
-          <div className="bg-amber-700 flex-1">VS</div>
-          <div className="bg-lime-500 flex-4">Away</div>
+          <div className="flex-2  flex flex-col justify-between items-center font-bold text-lg">
+            <div className="flex flex-col justify-between items-center gap-2">
+              <div>Match Details</div>
+              <div className="flex w-60 gap-4 ">
+                <Calendar1 className="" />
+                <div className="">{formatDate(data.findMatchById.date)}</div>
+              </div>
+              <div className="flex w-60 gap-4 ">
+                <Clock className="" />
+                <div>{formatTime(data.findMatchById.date)}</div>
+              </div>
+              <div className="flex w-60 gap-4 ">
+                <MapPin className="" />
+                <div>{data.findMatchById.venue}</div>
+              </div>
+
+              <div className="flex w-60 gap-4 ">
+                <NotebookTabsIcon className="" />
+                <div>{data.findMatchById.status}</div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 justify-center items-center w-full">
+              <div>Goals</div>
+              {data.goals.map((el) => {
+                return (
+                  <div className="flex justify-center items-center w-[600px] gap-4 ">
+                    <div className="w-1/5 ">{el.scorer}</div>
+                    <div className="w-1/5 ">({el.minute})</div>
+                    <div className="w-1/5 ">{el.assistBy}</div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex flex-col gap-2 justify-center items-center w-full ">
+              <div>Ticket</div>
+              {data.tickets.map((el) => {
+                return (
+                  <div
+                    key={el.id}
+                    className="flex justify-center items-center w-[600px]  gap-4"
+                  >
+                    <div className="w-1/5 ">{el.category}</div>
+                    <div className="w-1/5 ">{el.price}</div>
+                    <div className="w-1/5 ">{el.status}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
-        <div className="bg-blue-300 flex-[0.75]">Nama KLUB</div>
-        <div className="bg-yellow-300 flex-[0.75]">Skor</div>
-        <div className="bg-green-600 flex-3">Detail</div>
-      </div>
+      ) : (
+        <div className="flex justify-center items-center text-2xl font-bold">
+          No Data Available
+        </div>
+      )}
     </div>
   );
 }
 
 // {
-//     "findMatchById": {
-//       "id": 8,
-//       "HomeTeamId": 15,
-//       "AwayTeamId": 16,
-//       "date": "2025-02-23T00:00:00.000Z",
-//       "venue": "Wanda Metropoliano",
-//       "status": "Finished",
-//       "homeTeamScore": 1,
-//       "awayTeamScore": 0,
-//       "season": "2024",
-//       "createdAt": "2025-02-13T03:36:42.333Z",
-//       "updatedAt": "2025-02-13T07:39:47.940Z",
-//       "HomeTeam": {
+//   "findMatchById": {
+//     "id": 8,
+//     "HomeTeamId": 15,
+//     "AwayTeamId": 16,
+//     "date": "2025-02-23T00:00:00.000Z",
+//     "venue": "Wanda Metropoliano",
+//     "status": "Finished",
+//     "homeTeamScore": 1,
+//     "awayTeamScore": 0,
+//     "season": "2024",
+//     "createdAt": "2025-02-13T03:36:42.333Z",
+//     "updatedAt": "2025-02-13T14:31:21.478Z",
+//     "HomeTeam": {
+//       "id": 15,
+//       "name": "Everton",
+//       "city": "Liverpool",
+//       "stadium": "Goodison Park",
+//       "foundedYear": 1878,
+//       "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcbYrBuHs9ERzqwjovhSpYKYh4C6gDC-RkTkNLAf7gmfB_JiR5dF-VxR00YHCAmfS7cqHnpsx_uyFZ9anO2JU6EIP4dclYGc0ctn-3yfZRTZ9xtvrZI8A-yYnqv9gy8MeDhiasQoKhyphenhyphenCMsnLFc8I1C9b8lmgedpHgkGUyBgD9XlrKl7ZCowsYuoaTZGwk/s600/Burnley_FC.png",
+//       "createdAt": "2025-02-13T03:07:29.844Z",
+//       "updatedAt": "2025-02-13T03:07:29.844Z"
+//     },
+//     "AwayTeam": {
+//       "id": 16,
+//       "name": "Luton Town",
+//       "city": "Luton",
+//       "stadium": "Kenilworth Road",
+//       "foundedYear": 1885,
+//       "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivkLU_9ow87msLxrlxSNkXF3OkBfL2g1hOV_UUvAzgd1DQvYD40BUU0tks6E-QGD9Q9XfbbV5l-X_fiOeXvAknuWQuVsGlf8z2hyphenhyphen4w4_aBeGNmKmAm0nEq0lHPbgUxOMbYM25nmp9DaAwn1fuZQAJ2heNki2MSccjSftEF_T-uRJArcQeB7m-oBKbxEsE/s600/Luton_Town.png",
+//       "createdAt": "2025-02-13T03:07:29.844Z",
+//       "updatedAt": "2025-02-13T03:07:29.844Z"
+//     }
+//   },
+//   "goals": [
+//     {
+//       "id": 7,
+//       "MatchId": 8,
+//       "ScorerTeamId": 15,
+//       "scorer": "Justin Bieber",
+//       "minute": 87,
+//       "assistBy": "Kevin Kaks",
+//       "createdAt": "2025-02-13T07:39:47.932Z",
+//       "updatedAt": "2025-02-13T07:39:47.932Z",
+//       "Team": {
 //         "id": 15,
 //         "name": "Everton",
 //         "city": "Liverpool",
@@ -57,196 +172,51 @@ export default function DetailMatch() {
 //         "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcbYrBuHs9ERzqwjovhSpYKYh4C6gDC-RkTkNLAf7gmfB_JiR5dF-VxR00YHCAmfS7cqHnpsx_uyFZ9anO2JU6EIP4dclYGc0ctn-3yfZRTZ9xtvrZI8A-yYnqv9gy8MeDhiasQoKhyphenhyphenCMsnLFc8I1C9b8lmgedpHgkGUyBgD9XlrKl7ZCowsYuoaTZGwk/s600/Burnley_FC.png",
 //         "createdAt": "2025-02-13T03:07:29.844Z",
 //         "updatedAt": "2025-02-13T03:07:29.844Z"
-//       },
-//       "AwayTeam": {
-//         "id": 16,
-//         "name": "Luton Town",
-//         "city": "Luton",
-//         "stadium": "Kenilworth Road",
-//         "foundedYear": 1885,
-//         "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivkLU_9ow87msLxrlxSNkXF3OkBfL2g1hOV_UUvAzgd1DQvYD40BUU0tks6E-QGD9Q9XfbbV5l-X_fiOeXvAknuWQuVsGlf8z2hyphenhyphen4w4_aBeGNmKmAm0nEq0lHPbgUxOMbYM25nmp9DaAwn1fuZQAJ2heNki2MSccjSftEF_T-uRJArcQeB7m-oBKbxEsE/s600/Luton_Town.png",
+//       }
+//     },
+//     {
+//       "id": 8,
+//       "MatchId": 8,
+//       "ScorerTeamId": 15,
+//       "scorer": "DeanKT",
+//       "minute": 89,
+//       "assistBy": "Adel",
+//       "createdAt": "2025-02-13T14:31:21.448Z",
+//       "updatedAt": "2025-02-13T14:31:21.448Z",
+//       "Team": {
+//         "id": 15,
+//         "name": "Everton",
+//         "city": "Liverpool",
+//         "stadium": "Goodison Park",
+//         "foundedYear": 1878,
+//         "logoUrl": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcbYrBuHs9ERzqwjovhSpYKYh4C6gDC-RkTkNLAf7gmfB_JiR5dF-VxR00YHCAmfS7cqHnpsx_uyFZ9anO2JU6EIP4dclYGc0ctn-3yfZRTZ9xtvrZI8A-yYnqv9gy8MeDhiasQoKhyphenhyphenCMsnLFc8I1C9b8lmgedpHgkGUyBgD9XlrKl7ZCowsYuoaTZGwk/s600/Burnley_FC.png",
 //         "createdAt": "2025-02-13T03:07:29.844Z",
 //         "updatedAt": "2025-02-13T03:07:29.844Z"
 //       }
+//     }
+//   ],
+//   "tickets": [
+//     {
+//       "id": 4,
+//       "MatchId": 8,
+//       "category": "Economy",
+//       "price": 100000,
+//       "quantity": 100,
+//       "remainingQuantity": 100,
+//       "status": "Available",
+//       "createdAt": "2025-02-13T03:37:00.286Z",
+//       "updatedAt": "2025-02-13T03:37:00.286Z"
 //     },
-//     "goals": [
-//       {
-//         "id": 7,
-//         "MatchId": 8,
-//         "ScorerTeamId": 15,
-//         "scorer": "Justin Bieber",
-//         "minute": 87,
-//         "assistBy": "Kevin Kaks",
-//         "createdAt": "2025-02-13T07:39:47.932Z",
-//         "updatedAt": "2025-02-13T07:39:47.932Z"
-//       }
-//     ],
-//     "tickets": [
-//       {
-//         "id": 4,
-//         "MatchId": 8,
-//         "category": "Economy",
-//         "price": 100000,
-//         "quantity": 100,
-//         "remainingQuantity": 100,
-//         "status": "Available",
-//         "createdAt": "2025-02-13T03:37:00.286Z",
-//         "updatedAt": "2025-02-13T03:37:00.286Z"
-//       },
-//       {
-//         "id": 3,
-//         "MatchId": 8,
-//         "category": "VIP",
-//         "price": 200000,
-//         "quantity": 50,
-//         "remainingQuantity": 0,
-//         "status": "Sold Out",
-//         "createdAt": "2025-02-13T03:36:51.833Z",
-//         "updatedAt": "2025-02-13T03:58:31.433Z"
-//       }
-//     ]
-//   }
-
-"use client"
-
-const dummyData = {
-  findMatchById: {
-    id: 8,
-    HomeTeamId: 15,
-    AwayTeamId: 16,
-    date: "2025-02-23T00:00:00.000Z",
-    venue: "Wanda Metropoliano",
-    status: "Finished",
-    homeTeamScore: 1,
-    awayTeamScore: 0,
-    season: "2024",
-    createdAt: "2025-02-13T03:36:42.333Z",
-    updatedAt: "2025-02-13T07:39:47.940Z",
-    HomeTeam: {
-      id: 15,
-      name: "Everton",
-      city: "Liverpool",
-      stadium: "Goodison Park",
-      foundedYear: 1878,
-      logoUrl:
-        "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcbYrBuHs9ERzqwjovhSpYKYh4C6gDC-RkTkNLAf7gmfB_JiR5dF-VxR00YHCAmfS7cqHnpsx_uyFZ9anO2JU6EIP4dclYGc0ctn-3yfZRTZ9xtvrZI8A-yYnqv9gy8MeDhiasQoKhyphenhyphenCMsnLFc8I1C9b8lmgedpHgkGUyBgD9XlrKl7ZCowsYuoaTZGwk/s600/Burnley_FC.png",
-      createdAt: "2025-02-13T03:07:29.844Z",
-      updatedAt: "2025-02-13T03:07:29.844Z",
-    },
-    AwayTeam: {
-      id: 16,
-      name: "Luton Town",
-      city: "Luton",
-      stadium: "Kenilworth Road",
-      foundedYear: 1885,
-      logoUrl:
-        "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivkLU_9ow87msLxrlxSNkXF3OkBfL2g1hOV_UUvAzgd1DQvYD40BUU0tks6E-QGD9Q9XfbbV5l-X_fiOeXvAknuWQuVsGlf8z2hyphenhyphen4w4_aBeGNmKmAm0nEq0lHPbgUxOMbYM25nmp9DaAwn1fuZQAJ2heNki2MSccjSftEF_T-uRJArcQeB7m-oBKbxEsE/s600/Luton_Town.png",
-      createdAt: "2025-02-13T03:07:29.844Z",
-      updatedAt: "2025-02-13T03:07:29.844Z",
-    },
-  },
-  goals: [
-    {
-      id: 7,
-      MatchId: 8,
-      ScorerTeamId: 15,
-      scorer: "Justin Bieber",
-      minute: 87,
-      assistBy: "Kevin Kaks",
-      createdAt: "2025-02-13T07:39:47.932Z",
-      updatedAt: "2025-02-13T07:39:47.932Z",
-    },
-  ],
-  tickets: [
-    {
-      id: 4,
-      MatchId: 8,
-      category: "Economy",
-      price: 100000,
-      quantity: 100,
-      remainingQuantity: 100,
-      status: "Available",
-      createdAt: "2025-02-13T03:37:00.286Z",
-      updatedAt: "2025-02-13T03:37:00.286Z",
-    },
-    {
-      id: 3,
-      MatchId: 8,
-      category: "VIP",
-      price: 200000,
-      quantity: 50,
-      remainingQuantity: 0,
-      status: "Sold Out",
-      createdAt: "2025-02-13T03:36:51.833Z",
-      updatedAt: "2025-02-13T03:58:31.433Z",
-    },
-  ],
-}
-
-// export default function DetailMatch() {
-//   const { findMatchById, goals, tickets } = dummyData
-
-//   return (
-//     <div className="w-full min-h-screen flex justify-center items-center bg-[#38003D] text-white p-4">
-//       <div className="w-full max-w-[1100px] border-2 border-white rounded-lg flex flex-col justify-between p-6 space-y-6">
-//         <div className="flex justify-between items-center">
-//           <div className="flex flex-col items-center w-1/3">
-//             <div className="w-32 h-32 relative overflow-hidden mb-4">
-//               <img
-//                 src={findMatchById.HomeTeam.logoUrl || "/placeholder.svg"}
-//                 alt={findMatchById.HomeTeam.name}
-//                 className="absolute inset-0 w-full h-full object-contain"
-//               />
-//             </div>
-//             <span className="text-xl font-bold">{findMatchById.HomeTeam.name}</span>
-//           </div>
-//           <div className="flex flex-col items-center">
-//             <div className="text-4xl font-bold mb-2">VS</div>
-//             <div className="text-5xl font-bold">
-//               {findMatchById.homeTeamScore} - {findMatchById.awayTeamScore}
-//             </div>
-//           </div>
-//           <div className="flex flex-col items-center w-1/3">
-//             <div className="w-32 h-32 relative overflow-hidden mb-4">
-//               <img
-//                 src={findMatchById.AwayTeam.logoUrl || "/placeholder.svg"}
-//                 alt={findMatchById.AwayTeam.name}
-//                 className="absolute inset-0 w-full h-full object-contain"
-//               />
-//             </div>
-//             <span className="text-xl font-bold">{findMatchById.AwayTeam.name}</span>
-//           </div>
-//         </div>
-
-//         <div className="space-y-2">
-//           <h3 className="text-2xl font-semibold">Match Details</h3>
-//           <p>Date: {new Date(findMatchById.date).toLocaleDateString()}</p>
-//           <p>Venue: {findMatchById.venue}</p>
-//           <p>Status: {findMatchById.status}</p>
-//           <p>Season: {findMatchById.season}</p>
-//         </div>
-
-//         <div className="space-y-2">
-//           <h3 className="text-2xl font-semibold">Goals</h3>
-//           {goals.map((goal) => (
-//             <p key={goal.id}>
-//               {goal.scorer} ({goal.minute}') - Assisted by: {goal.assistBy}
-//             </p>
-//           ))}
-//         </div>
-
-//         <div className="space-y-2">
-//           <h3 className="text-2xl font-semibold">Tickets</h3>
-//           {tickets.map((ticket) => (
-//             <div key={ticket.id} className="flex justify-between items-center">
-//               <span>{ticket.category}</span>
-//               <span>Price: ${ticket.price}</span>
-//               <span>Status: {ticket.status}</span>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   )
+//     {
+//       "id": 3,
+//       "MatchId": 8,
+//       "category": "VIP",
+//       "price": 200000,
+//       "quantity": 50,
+//       "remainingQuantity": 0,
+//       "status": "Sold Out",
+//       "createdAt": "2025-02-13T03:36:51.833Z",
+//       "updatedAt": "2025-02-13T03:58:31.433Z"
+//     }
+//   ]
 // }
-

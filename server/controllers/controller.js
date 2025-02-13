@@ -200,6 +200,9 @@ class Controller {
         where: {
           MatchId: id,
         },
+        include: {
+          model: Team,
+        },
       });
 
       const findMatchTicket = await Ticket.findAll({

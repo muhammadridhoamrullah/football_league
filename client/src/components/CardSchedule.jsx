@@ -11,7 +11,20 @@ export const formatDate = (dateString) => {
   return date.toLocaleString("id-ID", options);
 };
 
-function statusMatch(status) {
+export const formatTime = (dateString) => {
+  const date = new Date(dateString);
+
+  // Format untuk waktu
+  const options = {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false, // Format 24 jam
+  };
+
+  return date.toLocaleString("id-ID", options);
+};
+
+export function statusMatch(status) {
   if (status === "Finished") {
     return "bg-red-500 w-fit h-fit p-2 rounded-lg";
   } else {
@@ -20,6 +33,17 @@ function statusMatch(status) {
 }
 
 export default function CardSchedule({ data }) {
+  console.log(data, "ini data card schedule");
+
+  const homeGoals =
+    data?.goals?.filter(
+      (el) => el.ScorerTeamId === data.findMatchById.HomeTeamId
+    ).length || 0;
+
+  const awayGoals =
+    data?.goals?.filter(
+      (el) => el.ScorerTeamId === data.findMatchById.AwayTeamId
+    ).length || 0;
   return (
     <div className="w-64 h-80 border-2 border-white rounded-lg flex flex-col">
       <div className="flex-2 flex justify-between items-center p-2 gap-4">
@@ -30,10 +54,11 @@ export default function CardSchedule({ data }) {
           <img src={data.AwayTeam.logoUrl} alt="" />
         </div>
       </div>
-      <div className="flex-0.5  flex justify-between font-bold text-2xl ">
-        <div className="w-full flex justify-center">{data.homeTeamScore}</div>
-        <div className="w-full flex justify-center">{data.awayTeamScore}</div>
-      </div>
+
+      {/* <div className="flex-0.5  flex justify-between font-bold text-2xl ">
+        <div className="w-full flex justify-center">{homeGoals}</div>
+        <div className="w-full flex justify-center">{awayGoals}</div>
+      </div> */}
       <div className="flex-2 flex flex-col justify-between p-2 gap-2 font-semibold">
         <div className=" w-full flex justify-between">
           <Calendar1 className="w-20" />
