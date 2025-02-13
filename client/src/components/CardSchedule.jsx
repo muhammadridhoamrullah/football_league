@@ -1,4 +1,5 @@
 import { Calendar1, LandPlot, MapPin, NotebookTabsIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -33,7 +34,7 @@ export default function CardSchedule({ data }) {
         <div className="w-full flex justify-center">{data.homeTeamScore}</div>
         <div className="w-full flex justify-center">{data.awayTeamScore}</div>
       </div>
-      <div className="flex-2 flex flex-col justify-between p-2 gap-2">
+      <div className="flex-2 flex flex-col justify-between p-2 gap-2 font-semibold">
         <div className=" w-full flex justify-between">
           <Calendar1 className="w-20" />
           <div className="w-full flex justify-start ">
@@ -49,9 +50,12 @@ export default function CardSchedule({ data }) {
           <div className={`w-full flex justify-start`}>{data.status}</div>
         </div>
         <div className="flex gap-2 justify-end">
-          <button className="w-12 h-7 rounded-sm bg-blue-700 font-medium text-sm">
+          <Link
+            to={`/schedule/detailMatch/${data.id}`}
+            className="cursor-pointer w-12 h-7 rounded-sm bg-blue-700 font-medium text-sm flex justify-center items-center"
+          >
             Detail
-          </button>
+          </Link>
 
           {data.status === "Finished" ? (
             <button
@@ -61,7 +65,7 @@ export default function CardSchedule({ data }) {
               End
             </button>
           ) : (
-            <button className="w-10 h-7 rounded-sm bg-green-800 font-medium text-sm">
+            <button className="w-10 h-7 rounded-sm bg-green-800 font-medium text-sm cursor-pointer">
               Buy
             </button>
           )}

@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import Team from "./pages/Team";
 import TeamDetail from "./pages/TeamDetail";
 import Schedule from "./pages/Schedule";
+import CreateMatch from "./pages/CreateMatch";
+import DetailMatch from "./pages/DetailMatch";
 
 function checkLogin() {
   if (!localStorage.access_token) {
@@ -41,16 +43,24 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/teams",
+        path: "teams",
         element: <Team />,
       },
       {
-        path: "/team/:id",
+        path: "team/:id",
         element: <TeamDetail />,
       },
       {
-        path: "/schedule",
+        path: "schedule",
         element: <Schedule />,
+      },
+      {
+        path: "schedule/create-match",
+        element: <CreateMatch />,
+      },
+      {
+        path: "schedule/detailMatch/:id",
+        element: <DetailMatch />,
       },
     ],
   },
