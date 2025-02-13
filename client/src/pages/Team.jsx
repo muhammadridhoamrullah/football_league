@@ -9,6 +9,7 @@ export default function Team() {
   const dispatch = useDispatch();
   const { loading, data, error } = useSelector((state) => state.team);
   console.log(data, "ini data");
+  console.log(localStorage.access_token, "ini acc token");
 
   useEffect(() => {
     dispatch(getTeam());

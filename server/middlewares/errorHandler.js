@@ -42,6 +42,16 @@ async function errorHandler(err, req, res, next) {
     res.status(400).json({ message: "Season is required" });
   } else if (err.name === "MISSING_INPUT_UPDATE_SCORE") {
     res.status(400).json({ message: "Home Score and Away Score is required" });
+  } else if (err.name === "STANDING_NOT_FOUND") {
+    res.status(404).json({ message: "Standing Not Found" });
+  } else if (err.name === "TICKET_NOT_FOUND") {
+    res.status(404).json({ message: "Ticket Not Found" });
+  } else if (err.name === "MATCH_FINISHED") {
+    res.status(400).json({ message: "Match has finished" });
+  } else if (err.name === "CATEGORY_TICKET_NOT_FOUND") {
+    res.status(404).json({ message: "Category Ticket Not Found" });
+  } else if (err.name === "INSUFFICIENT_TICKET_QUANTITY") {
+    res.status(400).json({ message: "Insufficient ticket quantity" });
   }
 }
 

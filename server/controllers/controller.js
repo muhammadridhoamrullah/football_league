@@ -155,6 +155,7 @@ class Controller {
   static async getAllMatches(req, res, next) {
     try {
       const findAllMatches = await Match.findAll({
+        order: [["date", "ASC"]],
         include: [
           {
             model: Team,
@@ -304,21 +305,28 @@ class Controller {
     try {
       const { id } = req.params;
 
-      const findTicketById = await Ticket.findByPk(id, {
-        include: {
-          model: Match,
-          include: [
-            {
-              model: Team,
-              as: "HomeTeam",
-            },
-            {
-              model: Team,
-              as: "AwayTeam",
-            },
-          ],
+      const findTicketById = await Ticket.findAll(
+        {
+          where: {
+            MatchId: id,
+          },
         },
-      });
+        {
+          include: {
+            model: Match,
+            include: [
+              {
+                model: Team,
+                as: "HomeTeam",
+              },
+              {
+                model: Team,
+                as: "AwayTeam",
+              },
+            ],
+          },
+        }
+      );
 
       if (!findTicketById) {
         throw { name: "DATA_NOT_FOUND" };
@@ -341,58 +349,94 @@ class Controller {
 
   static async purchaseTicket(req, res, next) {
     try {
-      const { id } = req.params;
-      const { quantity } = req.body;
+      const { matchId } = req.params;
+      const { quantity, category } = req.body;
 
-      const findTicket = await Ticket.findByPk(id, {
+      if (!quantity || !category) {
+        throw { name: "MISSING_INPUT_CREATE_TICKET" };
+      }
+
+      // Cari pertandingan dan tiket yang tersedia berdasarkan matchId
+      const findAvailableTicket = await Match.findByPk(matchId, {
         include: {
-          model: Match,
+          model: Ticket,
+          where: { category: category, status: "Available" },
         },
       });
 
-      if (!findTicket) {
-        throw { name: "DATA_NOT_FOUND" };
+      if (!findAvailableTicket) {
+        throw { name: "TICKET_NOT_FOUND" };
       }
 
-      if (findTicket.remainingQuantity === 0) {
+      // Pastikan pertandingan belum selesai
+      if (findAvailableTicket.status === "Finished") {
+        throw { name: "MATCH_FINISHED" };
+      }
+
+      // Cari tiket berdasarkan kategori
+      const ticket = findAvailableTicket.Tickets.find(
+        (t) => t.category === category
+      );
+
+      if (!ticket) {
+        throw {
+          name: "CATEGORY_TICKET_NOT_FOUND",
+        };
+      }
+
+      // Validasi jumlah tiket yang diminta
+      if (ticket.remainingQuantity === 0) {
         throw { name: "TICKET_SOLD_OUT" };
       }
 
+      if (ticket.remainingQuantity < quantity) {
+        throw {
+          name: "INSUFFICIENT_TICKET_QUANTITY",
+        };
+      }
+
+      // Proses pembelian tiket
+      const totalPrice = ticket.price * quantity;
+
       const createPurchase = await TicketPurchase.create({
-        UserId: req.user.id,
-        TicketId: id,
+        UserId: req.user.id, // Asumsikan `req.user.id` adalah ID pengguna yang melakukan pembelian
+        TicketId: ticket.id,
         quantity,
-        totalPrice: findTicket.price * quantity,
+        totalPrice,
         purchaseDate: new Date(),
       });
 
-      const updateTicket = await Ticket.update(
+      // Update sisa tiket setelah pembelian
+      await Ticket.update(
         {
-          remainingQuantity: findTicket.remainingQuantity - quantity,
+          remainingQuantity: ticket.remainingQuantity - quantity,
         },
         {
           where: {
-            id,
+            id: ticket.id,
           },
         }
       );
 
-      if (findTicket.remainingQuantity - quantity === 0) {
-        const updateTicketStatus = await Ticket.update(
+      // Jika jumlah tiket habis, update status tiket menjadi 'Sold Out'
+      if (ticket.remainingQuantity - quantity === 0) {
+        await Ticket.update(
           {
             status: "Sold Out",
           },
           {
             where: {
-              id,
+              id: ticket.id,
             },
           }
         );
       }
 
-      res
-        .status(201)
-        .json({ data: createPurchase, message: "Successfully Buy Ticket" });
+      // Response dengan detail pembelian tiket
+      res.status(201).json({
+        data: createPurchase,
+        message: "Tiket berhasil dibeli",
+      });
     } catch (error) {
       next(error);
     }
@@ -588,7 +632,14 @@ class Controller {
   static async updateMatchScore(req, res, next) {
     try {
       const { id } = req.params;
-      const { homeTeamScore, awayTeamScore } = req.body;
+      const {
+        homeTeamScore,
+        awayTeamScore,
+        ScorerTeamId,
+        scorer,
+        minute,
+        assistBy,
+      } = req.body;
 
       if (!homeTeamScore || !awayTeamScore) {
         throw { name: "MISSING_INPUT_UPDATE_SCORE" };
@@ -611,6 +662,20 @@ class Controller {
       // Jika pertandingan tidak ditemukan
       if (!findMatch) {
         throw { name: "DATA_NOT_FOUND" };
+      }
+
+      if (homeTeamScore > 0 || awayTeamScore > 0) {
+        if (!ScorerTeamId || !scorer || !minute) {
+          throw { name: "MISSING_INPUT_CREATE_GOAL" };
+        }
+
+        await Goal.create({
+          MatchId: id,
+          ScorerTeamId,
+          scorer,
+          minute,
+          assistBy,
+        });
       }
 
       // Update skor pertandingan dan statusnya
@@ -640,6 +705,10 @@ class Controller {
           TeamId: findMatch.AwayTeamId,
         },
       });
+
+      if (!findHomeTeamStanding || !findAwayTeamStanding) {
+        throw { name: "STANDING_NOT_FOUND" };
+      }
 
       // Menyesuaikan standing berdasarkan hasil pertandingan
       if (homeTeamScore > awayTeamScore) {

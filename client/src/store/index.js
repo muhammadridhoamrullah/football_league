@@ -3,6 +3,7 @@ import registerReducer from "./registerSlice";
 import loginReducer from "./loginSlice";
 import teamReducer from "./teamSlice";
 import detailTeamReducer from "./detailTeam";
+import scheduleReducer from "./scheduleSlice";
 
 export default configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
     login: loginReducer,
     team: teamReducer,
     detailTeam: detailTeamReducer,
+    schedule: scheduleReducer,
   },
 });

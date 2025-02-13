@@ -29,39 +29,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       ScorerTeamId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Team is required",
-          },
-          notEmpty: {
-            msg: "Team is required",
-          },
-        },
+        allowNull: true,
       },
+
       scorer: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: {
-            msg: "Scorer is required",
-          },
-          notNull: {
-            msg: "Scorer is required",
-          },
-        },
+        allowNull: true,
       },
       minute: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Minute is required",
-          },
-          notEmpty: {
-            msg: "Minute is required",
-          },
-        },
+        allowNull: true,
       },
       assistBy: {
         type: DataTypes.STRING,

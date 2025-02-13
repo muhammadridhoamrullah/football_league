@@ -5,6 +5,7 @@ import MainLayout from "./components/MainLayout";
 import Home from "./pages/Home";
 import Team from "./pages/Team";
 import TeamDetail from "./pages/TeamDetail";
+import Schedule from "./pages/Schedule";
 
 function checkLogin() {
   if (!localStorage.access_token) {
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/schedule",
-        element: <h1>Schedule</h1>,
+        element: <Schedule />,
       },
     ],
   },

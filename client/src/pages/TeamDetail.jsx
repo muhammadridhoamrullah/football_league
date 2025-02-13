@@ -7,6 +7,8 @@ import { Loader, Loader2, Loader2Icon, LoaderPinwheel } from "lucide-react";
 
 export default function TeamDetail() {
   const { id } = useParams();
+  console.log(id, "ini id");
+
   const dispatch = useDispatch();
   const { loading, data, error } = useSelector((state) => state.detailTeam);
   console.log(data, "ini data detail");
@@ -29,7 +31,7 @@ export default function TeamDetail() {
     <div className="w-full h-[551px] flex justify-center items-start py-10 bg-[#38003D] text-white">
       {loading ? (
         <Loader2Icon className="flex justify-center items-center w-52 h-52 animate-spin text-white" />
-      ) : (
+      ) : data ? (
         <div className="w-96 h-96 border border-white rounded-lg flex flex-col justify-between">
           <div className="flex-2 rounded-t-lg overflow-hidden">
             <img
@@ -56,6 +58,10 @@ export default function TeamDetail() {
               <div>: {data.foundedYear}</div>
             </div>
           </div>
+        </div>
+      ) : (
+        <div className="font-extrabold text-xl text-white flex justify-center items-center">
+          No data available
         </div>
       )}
     </div>

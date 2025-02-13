@@ -30,9 +30,11 @@ export const { detailTeamRequest, detailTeamSuccess, detailTeamError } =
 export function getDetailTeam(id) {
   return async (dispatch) => {
     dispatch(detailTeamRequest());
+    console.log(id, "Jalan");
 
     try {
       const response = await instance.get(`/teams/${id}`);
+      console.log(response.data.findTeamById, "ini response");
 
       dispatch(detailTeamSuccess(response.data.findTeamById));
     } catch (error) {

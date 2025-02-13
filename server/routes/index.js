@@ -18,6 +18,7 @@ const router = require("express").Router();
 
 router.post("/register", Controller.registerForUser);
 router.post("/login", Controller.login);
+router.get("/teams", Controller.getAllTeams);
 router.get("/teams/:id", Controller.getTeamById);
 router.get("/matches", Controller.getAllMatches);
 router.get("/matches/:id", Controller.getMatchById);
@@ -31,10 +32,9 @@ router.get("/tickets/:id", Controller.getTicketById);
 // POST /register-admin
 
 router.use(authentication);
-router.get("/teams", Controller.getAllTeams);
 
 // router.post("/register-admin", Controller.registerForAdmin);
-router.post("/ticket/purchase/:id", Controller.purchaseTicket);
+router.post("/ticket/purchase/:matchId", Controller.purchaseTicket);
 router.get("/ticket/my-tickets", Controller.getMyTickets);
 
 // Admin Authorization Required Endpoints:
