@@ -52,6 +52,8 @@ async function errorHandler(err, req, res, next) {
     res.status(400).json({ message: "Insufficient ticket quantity" });
   } else if (err.name === "INVALID_LOGIN") {
     res.status(400).json({ message: "Invalid email or password" });
+  } else if (err.name === "DOUBLE_TICKET_CATEGORY") {
+    res.status(400).json({ message: "Ticket category already exist" });
   }
 }
 

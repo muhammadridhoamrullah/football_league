@@ -45,7 +45,7 @@ export default function CardSchedule({ data }) {
       (el) => el.ScorerTeamId === data.findMatchById.AwayTeamId
     ).length || 0;
   return (
-    <div className="w-64 h-80 border-2 border-white rounded-lg flex flex-col">
+    <div className="w-80 h-80 border-2 border-white rounded-lg flex flex-col">
       <div className="flex-2 flex justify-between items-center p-2 gap-4">
         <div className="flex-1 w-full h-full">
           <img src={data.HomeTeam.logoUrl} alt="" />
@@ -82,12 +82,53 @@ export default function CardSchedule({ data }) {
             Detail
           </Link>
 
-          <Link
-            to={`/create-ticket/${data.id}`}
-            className="cursor-pointer w-12 h-7 rounded-md bg-yellow-700 font-medium text-sm flex justify-center items-center"
-          >
-            Ticket
-          </Link>
+          {data.status === "Finished" ? (
+            <button
+              disabled
+              className="w-12 h-7 rounded-md bg-gray-700 font-medium text-sm"
+            >
+              Score
+            </button>
+          ) : (
+            <Link
+              to={`/match/score/${data.id}`}
+              className="cursor-pointer w-12 h-7 rounded-md bg-orange-700 font-medium text-sm flex justify-center items-center"
+            >
+              Score
+            </Link>
+          )}
+
+          {data.status === "Finished" ? (
+            <button
+              disabled
+              className="w-10 h-7 rounded-md bg-gray-700 font-medium text-sm"
+            >
+              Goal
+            </button>
+          ) : (
+            <Link
+              to={`/match/goal/${data.id}`}
+              className="w-10 h-7 rounded-md cursor-pointer bg-fuchsia-800 font-medium text-sm flex justify-center items-center"
+            >
+              Goal
+            </Link>
+          )}
+          {/* Jika match finish maka Goal disabled */}
+          {data.status === "Finished" ? (
+            <button
+              disabled
+              className=" w-12 h-7 rounded-md bg-gray-700 font-medium text-sm "
+            >
+              Ticket
+            </button>
+          ) : (
+            <Link
+              to={`/create-ticket/${data.id}`}
+              className="cursor-pointer w-12 h-7 rounded-md bg-yellow-700 font-medium text-sm flex justify-center items-center"
+            >
+              Ticket
+            </Link>
+          )}
 
           {data.status === "Finished" ? (
             <button

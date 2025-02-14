@@ -57,6 +57,16 @@ export default function BuyTicket() {
   }, [error]);
 
   useEffect(() => {
+    if (errorDetailMatch) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: errorDetailMatch,
+      });
+    }
+  }, [errorDetailMatch]);
+
+  useEffect(() => {
     if (isSuccess) {
       navigate("/my-ticket");
       dispatch(resetStateSuccess());

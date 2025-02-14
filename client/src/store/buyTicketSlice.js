@@ -44,13 +44,21 @@ export function goBuyTicket(data, id) {
     dispatch(buyTicketRequest());
     console.log(data, "ini data buy ticket");
     console.log(id, "ini id");
+    const editInput = {
+      ...data,
+      quantity: parseInt(data.quantity, 10),
+    };
 
     try {
-      const response = await instance.post(`/ticket/purchase/${id}`, data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.access_token}`,
-        },
-      });
+      const response = await instance.post(
+        `/ticket/purchase/${id}`,
+        editInput,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.access_token}`,
+          },
+        }
+      );
 
       console.log(response, "ini response di store");
 

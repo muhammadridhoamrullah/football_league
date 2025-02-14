@@ -570,6 +570,17 @@ class Controller {
         throw { name: "MISSING_INPUT_CREATE_TICKET" };
       }
 
+      const checkDoubleCategory = await Ticket.findOne({
+        where: {
+          MatchId: id,
+          category,
+        },
+      });
+
+      if (checkDoubleCategory) {
+        throw { name: "DOUBLE_TICKET_CATEGORY" };
+      }
+
       const createTicket = await Ticket.create({
         MatchId: id,
         category,
@@ -639,14 +650,12 @@ class Controller {
   static async updateMatchScore(req, res, next) {
     try {
       const { id } = req.params;
-      const {
+      const { homeTeamScore, awayTeamScore } = req.body;
+      console.log(
         homeTeamScore,
         awayTeamScore,
-        ScorerTeamId,
-        scorer,
-        minute,
-        assistBy,
-      } = req.body;
+        "ini home team score dan away team score"
+      );
 
       if (!homeTeamScore || !awayTeamScore) {
         throw { name: "MISSING_INPUT_UPDATE_SCORE" };
@@ -669,20 +678,6 @@ class Controller {
       // Jika pertandingan tidak ditemukan
       if (!findMatch) {
         throw { name: "DATA_NOT_FOUND" };
-      }
-
-      if (homeTeamScore > 0 || awayTeamScore > 0) {
-        if (!ScorerTeamId || !scorer || !minute) {
-          throw { name: "MISSING_INPUT_CREATE_GOAL" };
-        }
-
-        await Goal.create({
-          MatchId: id,
-          ScorerTeamId,
-          scorer,
-          minute,
-          assistBy,
-        });
       }
 
       // Update skor pertandingan dan statusnya

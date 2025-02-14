@@ -26,10 +26,13 @@ export default function DetailMatch() {
       (el) => el.ScorerTeamId === data.findMatchById.HomeTeamId
     ).length || 0;
 
+  console.log(homeGoals, "ini home goals");
+
   const awayGoals =
     data?.goals?.filter(
       (el) => el.ScorerTeamId === data.findMatchById.AwayTeamId
     ).length || 0;
+  console.log(awayGoals, "ini away goals");
 
   return (
     <div className="w-full h-[551px] flex justify-center items-start pt-4 bg-[#38003D] text-white">

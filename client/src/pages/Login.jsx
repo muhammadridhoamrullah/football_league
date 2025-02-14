@@ -105,6 +105,7 @@ export default function Login() {
                   />
 
                   <button
+                    type="button"
                     className="absolute right-2 top-2 "
                     onClick={seePassword}
                   >
