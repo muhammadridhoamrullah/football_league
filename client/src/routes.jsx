@@ -10,6 +10,7 @@ import CreateMatch from "./pages/CreateMatch";
 import DetailMatch from "./pages/DetailMatch";
 import BuyTicket from "./pages/BuyTicket";
 import MyTicket from "./pages/MyTicket";
+import CreateTicket from "./pages/CreateTicket";
 
 function checkLogin() {
   if (!localStorage.access_token) {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "my-ticket",
         element: <MyTicket />,
+      },
+      {
+        path: "create-ticket/:id",
+        element: <CreateTicket />,
       },
     ],
   },

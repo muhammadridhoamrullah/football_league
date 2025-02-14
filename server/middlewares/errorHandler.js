@@ -33,9 +33,7 @@ async function errorHandler(err, req, res, next) {
       message: "Home Team, Away Team, Date, Venue, and Season is required",
     });
   } else if (err.name === "MISSING_INPUT_CREATE_TICKET") {
-    res
-      .status(400)
-      .json({ message: "Match Id, Category, Price, and Quantity is required" });
+    res.status(400).json({ message: "Quantity and Category is required" });
   } else if (err.name === "STANDING_ALREADY_CREATED") {
     res.status(400).json({ message: "Standing already created" });
   } else if (err.name === "MISSING_INPUT_CREATE_STANDING") {

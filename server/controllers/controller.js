@@ -223,13 +223,10 @@ class Controller {
 
   static async getStandings(req, res, next) {
     try {
-      const { idSeason } = req.params;
+      // const { idSeason } = req.params;
       const findAllStandings = await Standing.findAll({
         include: {
           model: Team,
-        },
-        where: {
-          season: idSeason,
         },
       });
 
@@ -566,14 +563,15 @@ class Controller {
 
   static async createTicket(req, res, next) {
     try {
-      const { MatchId, category, price, quantity } = req.body;
+      const { id } = req.params;
+      const { category, price, quantity } = req.body;
 
-      if (!MatchId || !category || !price || !quantity) {
+      if (!category || !price || !quantity) {
         throw { name: "MISSING_INPUT_CREATE_TICKET" };
       }
 
       const createTicket = await Ticket.create({
-        MatchId,
+        MatchId: id,
         category,
         price,
         quantity,

@@ -8,6 +8,7 @@ import createMatchReducer from "./createMatchSlice";
 import detailMatchReducer from "./detailMatchSlice";
 import buyTicketReducer from "./buyTicketSlice";
 import myTicketReducer from "./myTicketSlice";
+import standingReducer from "./standingSlice";
 
 export default configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export default configureStore({
     detailMatch: detailMatchReducer,
     buyTicket: buyTicketReducer,
     myTicket: myTicketReducer,
+    standing: standingReducer,
   },
 });

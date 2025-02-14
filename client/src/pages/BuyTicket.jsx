@@ -20,6 +20,7 @@ export default function BuyTicket() {
     (state) => state.buyTicket
   );
   console.log(isSuccess, "ini isSuccess");
+  console.log(error, "ini error");
 
   const [formBuyTicket, setFormBuyTicket] = useState({
     quantity: "",
@@ -45,14 +46,15 @@ export default function BuyTicket() {
   }, [id]);
 
   useEffect(() => {
-    if (errorDetailMatch) {
+    if (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: errorDetailMatch,
+        text: error,
       });
     }
-  }, [errorDetailMatch]);
+    dispatch(resetStateSuccess());
+  }, [error]);
 
   useEffect(() => {
     if (isSuccess) {

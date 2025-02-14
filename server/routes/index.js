@@ -22,7 +22,7 @@ router.get("/teams", Controller.getAllTeams);
 router.get("/teams/:id", Controller.getTeamById);
 router.get("/matches", Controller.getAllMatches);
 router.get("/matches/:id", Controller.getMatchById);
-router.get("/standings/:idSeason", Controller.getStandings);
+router.get("/standings", Controller.getStandings);
 router.get("/tickets", Controller.getAllTickets);
 router.get("/tickets/:id", Controller.getTicketById);
 
@@ -48,7 +48,7 @@ router.get("/ticket/my-tickets", Controller.getMyTickets);
 router.post("/teams", authorizationAdmin, Controller.createTeam);
 router.post("/matches", authorizationAdmin, Controller.createMatch);
 router.put("/matches/:id", authorizationAdmin, Controller.updateMatch);
-router.post("/tickets", authorizationAdmin, Controller.createTicket);
+router.post("/tickets/:id", authorizationAdmin, Controller.createTicket);
 router.put("/tickets/:id", authorizationAdmin, Controller.updateTicket);
 router.put("/match/:id/score", authorizationAdmin, Controller.updateMatchScore);
 

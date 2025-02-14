@@ -82,6 +82,13 @@ export default function CardSchedule({ data }) {
             Detail
           </Link>
 
+          <Link
+            to={`/create-ticket/${data.id}`}
+            className="cursor-pointer w-12 h-7 rounded-md bg-yellow-700 font-medium text-sm flex justify-center items-center"
+          >
+            Ticket
+          </Link>
+
           {data.status === "Finished" ? (
             <button
               disabled
