@@ -6,6 +6,8 @@ import detailTeamReducer from "./detailTeam";
 import scheduleReducer from "./scheduleSlice";
 import createMatchReducer from "./createMatchSlice";
 import detailMatchReducer from "./detailMatchSlice";
+import buyTicketReducer from "./buyTicketSlice";
+import myTicketReducer from "./myTicketSlice";
 
 export default configureStore({
   reducer: {
@@ -16,5 +18,7 @@ export default configureStore({
     schedule: scheduleReducer,
     createMatch: createMatchReducer,
     detailMatch: detailMatchReducer,
+    buyTicket: buyTicketReducer,
+    myTicket: myTicketReducer,
   },
 });

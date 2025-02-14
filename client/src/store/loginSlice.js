@@ -36,12 +36,13 @@ export function doLogin(data) {
       console.log(data, "ini data login");
 
       const response = await instance.post("/login", data);
+      console.log(response, "ini response di store");
 
       localStorage.access_token = response.data.access_token;
 
       dispatch(loginSuccess(response.data));
     } catch (error) {
-      console.log(error, "ini error");
+      console.log(error, "ini error di store");
 
       dispatch(loginError(error.response.data.message));
     }

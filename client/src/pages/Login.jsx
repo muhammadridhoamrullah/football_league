@@ -10,6 +10,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [hidePassword, setHidePassword] = useState(true);
   const { loading, data, error, isLogin } = useSelector((state) => state.login);
+  console.log(error, "ini error");
 
   const [formLogin, setFormLogin] = useState({
     username: "",
@@ -28,13 +29,11 @@ export default function Login() {
   async function submitHandler(e) {
     e.preventDefault();
     const isEmail = formLogin.username.includes("@");
-    console.log(isEmail, "ini isEmail");
 
     const checkInput = {
       [isEmail ? "email" : "username"]: formLogin.username,
       password: formLogin.password,
     };
-    console.log(checkInput, "ini checkinput");
 
     dispatch(doLogin(checkInput));
   }

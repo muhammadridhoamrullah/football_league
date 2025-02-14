@@ -24,7 +24,7 @@ export default function Navbar() {
 
   return (
     <div className="w-full h-14 bg-[#38003D] text-white flex justify-between  font-semibold text-md sticky top-0 z-50">
-      <div className="flex w-80 h-full">
+      <div className="flex w-80 h-full ">
         <Link
           to={"/"}
           className={`flex justify-center items-center w-full ${pathActive(
@@ -50,14 +50,24 @@ export default function Navbar() {
           Schedule
         </Link>
       </div>
-      <button
-        onClick={() => {
-          logoutHandler();
-        }}
-        className="text-sm flex justify-center items-center mr-5 w-fit p-2 gap-1 hover:text-[#ceab5d] cursor-pointer"
-      >
-        <LogOutIcon /> Logout
-      </button>
+      <div className="flex w-56 h-full">
+        <Link
+          className={`flex justify-center items-center w-full hover:text-[#ceab5d] cursor-pointer ${pathActive(
+            "my-ticket"
+          )}`}
+          to={"/my-ticket"}
+        >
+          My Tickets
+        </Link>
+        <button
+          onClick={() => {
+            logoutHandler();
+          }}
+          className="text-sm flex justify-center items-center mr-5 w-fit p-2 gap-1 hover:text-[#ceab5d] cursor-pointer"
+        >
+          <LogOutIcon /> Logout
+        </button>
+      </div>
     </div>
   );
 }

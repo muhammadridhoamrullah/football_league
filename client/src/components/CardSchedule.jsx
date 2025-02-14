@@ -90,9 +90,12 @@ export default function CardSchedule({ data }) {
               End
             </button>
           ) : (
-            <button className="w-10 h-7 rounded-sm bg-green-800 font-medium text-sm cursor-pointer">
+            <Link
+              to={`/schedule/match/buy-ticket/${data.id}`}
+              className="w-10 h-7 rounded-sm bg-green-800 font-medium text-sm cursor-pointer flex justify-center items-center"
+            >
               Buy
-            </button>
+            </Link>
           )}
         </div>
       </div>

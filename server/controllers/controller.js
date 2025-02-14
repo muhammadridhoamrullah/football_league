@@ -447,21 +447,27 @@ class Controller {
 
   static async getMyTickets(req, res, next) {
     try {
-      const findMyTickets = await TicketPurchase.findAll(
-        {
-          where: {
-            UserId: req.user.id,
+      const findMyTickets = await TicketPurchase.findAll({
+        where: {
+          UserId: req.user.id,
+        },
+        include: {
+          model: Ticket,
+          include: {
+            model: Match,
+            include: [
+              {
+                model: Team,
+                as: "HomeTeam",
+              },
+              {
+                model: Team,
+                as: "AwayTeam",
+              },
+            ],
           },
         },
-        {
-          include: {
-            model: Ticket,
-            include: {
-              model: Match,
-            },
-          },
-        }
-      );
+      });
 
       res.status(200).json(findMyTickets);
     } catch (error) {

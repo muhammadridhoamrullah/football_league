@@ -61,7 +61,7 @@ export default function DetailMatch() {
             </div>
           </div>
           <div className="flex-2  flex flex-col justify-between items-center font-bold text-lg">
-            <div className="flex flex-col justify-between items-center gap-2">
+            <div className="flex flex-col justify-between items-center gap-2  ">
               <div>Match Details</div>
               <div className="flex w-60 gap-4 ">
                 <Calendar1 className="" />

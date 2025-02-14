@@ -8,6 +8,8 @@ import TeamDetail from "./pages/TeamDetail";
 import Schedule from "./pages/Schedule";
 import CreateMatch from "./pages/CreateMatch";
 import DetailMatch from "./pages/DetailMatch";
+import BuyTicket from "./pages/BuyTicket";
+import MyTicket from "./pages/MyTicket";
 
 function checkLogin() {
   if (!localStorage.access_token) {
@@ -61,6 +63,14 @@ const router = createBrowserRouter([
       {
         path: "schedule/detailMatch/:id",
         element: <DetailMatch />,
+      },
+      {
+        path: "schedule/match/buy-ticket/:id",
+        element: <BuyTicket />,
+      },
+      {
+        path: "my-ticket",
+        element: <MyTicket />,
       },
     ],
   },
