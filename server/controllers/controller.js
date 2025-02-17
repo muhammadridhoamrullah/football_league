@@ -11,6 +11,8 @@ const {
   TicketPurchase,
   User,
 } = require("../models/index");
+const redis = require("../config/redis");
+
 class Controller {
   static async registerForUser(req, res, next) {
     try {
@@ -96,9 +98,18 @@ class Controller {
 
   static async getAllTeams(req, res, next) {
     try {
+      const cacheTeamsFromRedis = await redis.get("teams:all");
+      console.log(cacheTeamsFromRedis, "ini cache teams from redis");
+
+      if (cacheTeamsFromRedis) {
+        return res.status(200).json(JSON.parse(cacheTeamsFromRedis));
+      }
+
       const allTeams = await Team.findAll({
         order: [["name", "ASC"]],
       });
+      await redis.set("teams:all", JSON.stringify(allTeams));
+      console.log(allTeams, "ini all teams");
 
       res.status(200).json(allTeams);
     } catch (error) {
@@ -154,6 +165,16 @@ class Controller {
 
   static async getAllMatches(req, res, next) {
     try {
+      const chacheAllMatchesFromRedis = await redis.get("matches:all");
+      console.log(
+        chacheAllMatchesFromRedis,
+        "ini cache all matches from redis"
+      );
+
+      if (chacheAllMatchesFromRedis) {
+        return res.status(200).json(JSON.parse(chacheAllMatchesFromRedis));
+      }
+
       const findAllMatches = await Match.findAll({
         order: [["date", "ASC"]],
         include: [
@@ -167,6 +188,9 @@ class Controller {
           },
         ],
       });
+      console.log(findAllMatches, "ini find all matches");
+
+      await redis.set("matches:all", JSON.stringify(findAllMatches));
 
       res.status(200).json(findAllMatches);
     } catch (error) {
@@ -501,6 +525,20 @@ class Controller {
 
       if (!HomeTeamId || !AwayTeamId || !date || !venue || !season) {
         throw { name: "MISSING_INPUT_CREATE_MATCH" };
+      }
+      console.log(HomeTeamId, "ini home team id");
+      console.log(AwayTeamId, "ini away team id");
+
+      const checkDuplicate1 = await Match.findOne({
+        where: {
+          HomeTeamId,
+          AwayTeamId,
+        },
+      });
+      console.log(checkDuplicate1, "ini check duplicate match 1");
+
+      if (checkDuplicate1) {
+        throw { name: "DUPLICATE_MATCH_1" };
       }
 
       const createMatch = await Match.create({

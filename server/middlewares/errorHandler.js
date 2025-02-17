@@ -56,6 +56,8 @@ async function errorHandler(err, req, res, next) {
     res.status(400).json({ message: "Ticket category already exist" });
   } else if (err.name === "MISSING_INPUT_CREATE_GOAL") {
     res.status(400).json({ message: "Team Scorer is required" });
+  } else if (err.name === "DUPLICATE_MATCH_1") {
+    res.status(400).json({ message: "Match already exist" });
   }
 }
 
