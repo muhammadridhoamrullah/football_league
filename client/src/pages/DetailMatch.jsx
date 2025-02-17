@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getDetailMatch } from "../store/detailMatchSlice";
 import {
   Calendar1,
@@ -10,12 +10,58 @@ import {
   NotebookTabsIcon,
 } from "lucide-react";
 import { formatDate, formatTime } from "../components/CardSchedule";
+import { goFullTime, resetFullTime } from "../store/fullTimeSlice";
+import Swal from "sweetalert2";
 
 export default function DetailMatch() {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { data, loading, error } = useSelector((state) => state.detailMatch);
   console.log(data, "ini data detail match");
+
+  const {
+    loading: loadingFullTime,
+    error: errorFullTime,
+    data: dataFullTime,
+    isSuccess,
+  } = useSelector((state) => state.fullTime);
+
+  useEffect(() => {
+    if (errorFullTime) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: errorFullTime,
+      });
+    }
+  }, [errorFullTime]);
+
+  useEffect(() => {
+    if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error,
+      });
+    }
+  }, [error]);
+
+  async function fullTimeHandler(id) {
+    dispatch(goFullTime(id));
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Match has been finished",
+      });
+      navigate(`/schedule`);
+      dispatch(resetFullTime());
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     dispatch(getDetailMatch(id));
@@ -35,18 +81,18 @@ export default function DetailMatch() {
   console.log(awayGoals, "ini away goals");
 
   return (
-    <div className="w-full h-[551px] flex justify-center items-start pt-4 bg-[#38003D] text-white">
-      {loading && (
+    <div className="w-full min-h-screen p-4 flex justify-center items-start pt-4 bg-[#38003D] text-white">
+      {(loading || loadingFullTime) && (
         <Loader2Icon className="flex justify-center items-center w-40 h-40 animate-spin text-white" />
       )}
       {data && data.findMatchById ? (
-        <div className="w-[1100px] h-[500px] border-2 border-white rounded-lg flex flex-col justify-between p-4">
+        <div className="w-[1100px]  h-fit border-2 border-white rounded-lg flex flex-col justify-between p-4">
           <div className="flex-1  flex justify-between">
-            <div className=" w-2/3 h-full relative">
+            <div className=" w-2/3 flex justify-center items-center ">
               <img
                 src={data.findMatchById.HomeTeam.logoUrl}
                 alt={data.findMatchById.HomeTeam.name}
-                className="absolute w-full h-full  inset-0 object-contain"
+                className="object-contain max-h-[150px] w-auto"
               />
             </div>
             <div className=" w-1/3 h-full flex flex-col justify-center items-center text-4xl font-bold gap-2">
@@ -55,15 +101,15 @@ export default function DetailMatch() {
                 {homeGoals} - {awayGoals}
               </div>
             </div>
-            <div className=" w-2/3 h-full relative">
+            <div className=" w-2/3 flex justify-center items-center">
               <img
                 src={data.findMatchById.AwayTeam.logoUrl}
                 alt={data.findMatchById.AwayTeam.name}
-                className="absolute w-full h-full inset-0 object-contain"
+                className="object-contain max-h-[150px] w-auto"
               />
             </div>
           </div>
-          <div className="flex-2  flex flex-col justify-between items-center font-bold text-lg">
+          <div className="flex-2  flex flex-col justify-between items-center font-bold text-lg gap-4">
             <div className="flex flex-col justify-between items-center gap-2  ">
               <div>Match Details</div>
               <div className="flex w-60 gap-4 ">
@@ -88,10 +134,14 @@ export default function DetailMatch() {
               <div>Goals</div>
               {data.goals.map((el) => {
                 return (
-                  <div className="flex justify-center items-center w-[600px] gap-4 ">
-                    <div className="w-1/5 ">{el.scorer}</div>
-                    <div className="w-1/5 ">({el.minute})</div>
-                    <div className="w-1/5 ">{el.assistBy}</div>
+                  <div className="flex justify-center items-center w-full gap-4  ">
+                    <div className="w-2/3 flex justify-end  ">{el.scorer}</div>
+                    <div className="w-1/3 flex justify-center  ">
+                      ({el.minute}')
+                    </div>
+                    <div className="w-2/3 flex justify-start ">
+                      {el.assistBy}
+                    </div>
                   </div>
                 );
               })}
@@ -111,6 +161,21 @@ export default function DetailMatch() {
                 );
               })}
             </div>
+
+            {data.findMatchById.status === "Finished" ? (
+              <button disabled className="w-fit p-2 bg-gray-700 rounded-lg">
+                Full Time
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  fullTimeHandler(data.findMatchById.id);
+                }}
+                className="w-fit p-2 bg-green-800 hover:bg-green-700 rounded-lg"
+              >
+                Full Time
+              </button>
+            )}
           </div>
         </div>
       ) : (

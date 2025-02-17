@@ -10,7 +10,8 @@ import buyTicketReducer from "./buyTicketSlice";
 import myTicketReducer from "./myTicketSlice";
 import standingReducer from "./standingSlice";
 import createTicketReducer from "./createTicketSlice";
-import addScoreReducer from "./addScoreSlice";
+import fullTimeReducer from "./fullTimeSlice";
+import addGoalReducer from "./addGoalSlice";
 
 export default configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export default configureStore({
     myTicket: myTicketReducer,
     standing: standingReducer,
     createTicket: createTicketReducer,
-    addScore: addScoreReducer,
+    fullTime: fullTimeReducer,
+    addGoal: addGoalReducer,
   },
 });

@@ -203,6 +203,7 @@ class Controller {
         include: {
           model: Team,
         },
+        order: [["minute", "ASC"]],
       });
 
       const findMatchTicket = await Ticket.findAll({
@@ -647,19 +648,9 @@ class Controller {
     }
   }
 
-  static async updateMatchScore(req, res, next) {
+  static async matchFullTime(req, res, next) {
     try {
       const { id } = req.params;
-      const { homeTeamScore, awayTeamScore } = req.body;
-      console.log(
-        homeTeamScore,
-        awayTeamScore,
-        "ini home team score dan away team score"
-      );
-
-      if (!homeTeamScore || !awayTeamScore) {
-        throw { name: "MISSING_INPUT_UPDATE_SCORE" };
-      }
 
       // Mencari pertandingan berdasarkan ID
       const findMatch = await Match.findByPk(id, {
@@ -683,8 +674,6 @@ class Controller {
       // Update skor pertandingan dan statusnya
       await Match.update(
         {
-          homeTeamScore,
-          awayTeamScore,
           status: "Finished",
           updatedAt: new Date(),
         },
@@ -711,6 +700,27 @@ class Controller {
       if (!findHomeTeamStanding || !findAwayTeamStanding) {
         throw { name: "STANDING_NOT_FOUND" };
       }
+
+      const findGoal = await Goal.findAll({
+        where: {
+          MatchId: id,
+        },
+        include: {
+          model: Team,
+        },
+      });
+
+      const homeTeamScore =
+        findGoal.filter((el) => el.ScorerTeamId === findMatch.HomeTeamId)
+          .length || 0;
+
+      console.log(homeTeamScore, "ini home team score");
+
+      const awayTeamScore =
+        findGoal.filter((el) => el.ScorerTeamId === findMatch.AwayTeamId)
+          .length || 0;
+
+      console.log(awayTeamScore, "ini away team score");
 
       // Menyesuaikan standing berdasarkan hasil pertandingan
       if (homeTeamScore > awayTeamScore) {
@@ -744,7 +754,7 @@ class Controller {
 
       // Kirimkan respon berhasil dengan data terbaru
       return res.status(200).json({
-        message: "Match score updated successfully",
+        message: "Match has been finished",
         match: {
           id: findMatch.id,
           homeTeamScore,
@@ -794,6 +804,50 @@ class Controller {
       await Standing.bulkCreate(standings);
 
       res.status(200).json({ message: "Standings initialized successfully" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async addGoal(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const { ScorerTeamId, scorer, minute, assistBy } = req.body;
+
+      if (!ScorerTeamId) {
+        throw { name: "MISSING_INPUT_CREATE_GOAL" };
+      }
+
+      const findMatch = await Match.findByPk(id, {
+        include: [
+          {
+            model: Team,
+            as: "HomeTeam",
+          },
+          {
+            model: Team,
+            as: "AwayTeam",
+          },
+        ],
+      });
+
+      if (!findMatch) {
+        throw { name: "DATA_NOT_FOUND" };
+      }
+
+      const createGoal = await Goal.create({
+        MatchId: id,
+        ScorerTeamId,
+        scorer,
+        minute,
+        assistBy,
+      });
+
+      res.status(201).json({
+        message: "Goal created successfully",
+        data: createGoal,
+      });
     } catch (error) {
       next(error);
     }

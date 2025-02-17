@@ -82,7 +82,7 @@ export default function CardSchedule({ data }) {
             Detail
           </Link>
 
-          {data.status === "Finished" ? (
+          {/* {data.status === "Finished" ? (
             <button
               disabled
               className="w-12 h-7 rounded-md bg-gray-700 font-medium text-sm"
@@ -96,7 +96,7 @@ export default function CardSchedule({ data }) {
             >
               Score
             </Link>
-          )}
+          )} */}
 
           {data.status === "Finished" ? (
             <button

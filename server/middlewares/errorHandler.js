@@ -54,6 +54,8 @@ async function errorHandler(err, req, res, next) {
     res.status(400).json({ message: "Invalid email or password" });
   } else if (err.name === "DOUBLE_TICKET_CATEGORY") {
     res.status(400).json({ message: "Ticket category already exist" });
+  } else if (err.name === "MISSING_INPUT_CREATE_GOAL") {
+    res.status(400).json({ message: "Team Scorer is required" });
   }
 }
 

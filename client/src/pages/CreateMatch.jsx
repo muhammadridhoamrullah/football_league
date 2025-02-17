@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { Loader2Icon } from "lucide-react";
 import { getTeam } from "../store/teamSlice";
 import { useNavigate } from "react-router-dom";
-import { doCreateMatch } from "../store/createMatchSlice";
+import { doCreateMatch, resetCreateMatch } from "../store/createMatchSlice";
 
 export default function CreateMatch() {
   const dispatch = useDispatch();
@@ -51,18 +51,35 @@ export default function CreateMatch() {
   }, []);
 
   useEffect(() => {
+    if (errorGetTeam) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: errorGetTeam,
+      });
+    }
+  }, [errorGetTeam]);
+
+  useEffect(() => {
     if (errorCreateMatch) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: errorCreateMatch,
       });
+      dispatch(resetCreateMatch());
     }
-  }, [errorCreateMatch, errorGetTeam]);
+  }, [errorCreateMatch]);
 
   useEffect(() => {
     if (isCreate) {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Match created successfully",
+      });
       navigate("/schedule");
+      dispatch(resetCreateMatch());
     }
   }, [isCreate]);
 

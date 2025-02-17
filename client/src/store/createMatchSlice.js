@@ -24,11 +24,20 @@ export const createMatchSlice = createSlice({
       state.error = action.payload;
       state.isCreate = false;
     },
+    resetCreateMatch: (state) => {
+      state.error = null;
+      state.data = null;
+      state.isCreate = false;
+    },
   },
 });
 
-export const { createMatchRequest, createMatchSuccess, createMatchError } =
-  createMatchSlice.actions;
+export const {
+  createMatchRequest,
+  createMatchSuccess,
+  createMatchError,
+  resetCreateMatch,
+} = createMatchSlice.actions;
 
 export function doCreateMatch(data) {
   return async (dispatch) => {

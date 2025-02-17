@@ -50,7 +50,8 @@ router.post("/matches", authorizationAdmin, Controller.createMatch);
 router.put("/matches/:id", authorizationAdmin, Controller.updateMatch);
 router.post("/tickets/:id", authorizationAdmin, Controller.createTicket);
 router.put("/tickets/:id", authorizationAdmin, Controller.updateTicket);
-router.put("/match/:id/score", authorizationAdmin, Controller.updateMatchScore);
+router.put("/match/:id/fullTime", authorizationAdmin, Controller.matchFullTime);
+router.post("/match/:id/goal", authorizationAdmin, Controller.addGoal);
 
 router.post("/standings", authorizationAdmin, Controller.createStanding);
 
